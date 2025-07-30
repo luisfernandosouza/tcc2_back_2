@@ -96,8 +96,7 @@ model PontoTuristico {
   nome           String
   descricao      String
   endereco       String?
-  latitude       Float?
-  longitude      Float?
+  location       Json?
   avaliacoes     Avaliacao[]
   recomendacoes  Recomendacao[]
   preferencias   Preferencia[]  @relation(fields: [preferenciaIds], references: [id])

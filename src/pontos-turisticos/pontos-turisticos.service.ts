@@ -1,11 +1,15 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { PontoTuristico, Prisma } from '@prisma/client';
 import { CreatePontoTuristicoDto } from './dto/create-ponto-turistico.dto';
 import { UpdatePontoTuristicoDto } from './dto/update-ponto-turistico.dto';
 
 @Injectable()
-export class PontoTuristicoService {
+export class PontosTuristicosService {
   constructor(private prisma: PrismaService) {}
 
   /**
@@ -18,7 +22,7 @@ export class PontoTuristicoService {
     const { categoriaIds, ...pontoTuristicoData } = data;
 
     // Conecta categorias existentes ou lança erro se alguma não existir
-    const connectCategories = categoriaIds.map(id => ({ id }));
+    const connectCategories = categoriaIds.map((id) => ({ id }));
 
     try {
       return this.prisma.pontoTuristico.create({
@@ -31,8 +35,13 @@ export class PontoTuristicoService {
       });
     } catch (error) {
       // Exemplo de tratamento de erro para categoria não encontrada
-      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
-        throw new NotFoundException('Uma ou mais categorias fornecidas não foram encontradas.');
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      ) {
+        throw new NotFoundException(
+          'Uma ou mais categorias fornecidas não foram encontradas.',
+        );
       }
       throw error;
     }
@@ -60,7 +69,9 @@ export class PontoTuristicoService {
       include: { categorias: true },
     });
     if (!pontoTuristico) {
-      throw new NotFoundException(`Ponto turístico com ID "${id}" não encontrado.`);
+      throw new NotFoundException(
+        `Ponto turístico com ID "${id}" não encontrado.`,
+      );
     }
     return pontoTuristico;
   }
@@ -73,14 +84,19 @@ export class PontoTuristicoService {
    * @returns O ponto turístico atualizado.
    * @throws NotFoundException Se o ponto turístico não for encontrado.
    */
-  async update(id: string, data: UpdatePontoTuristicoDto): Promise<PontoTuristico> {
+  async update(
+    id: string,
+    data: UpdatePontoTuristicoDto,
+  ): Promise<PontoTuristico> {
     const { categoriaIds, ...pontoTuristicoData } = data;
 
-    let updateData: Prisma.PontoTuristicoUpdateInput = { ...pontoTuristicoData };
+    let updateData: Prisma.PontoTuristicoUpdateInput = {
+      ...pontoTuristicoData,
+    };
 
     if (categoriaIds !== undefined) {
       // Se categoriaIds for fornecido, atualiza as relações
-      const connectCategories = categoriaIds.map(catId => ({ id: catId }));
+      const connectCategories = categoriaIds.map((catId) => ({ id: catId }));
       updateData = {
         ...updateData,
         categorias: {
@@ -98,10 +114,13 @@ export class PontoTuristicoService {
     } catch (error) {
       if (error instanceof Prisma.PrismaClientKnownRequestError) {
         if (error.code === 'P2025') {
-          throw new NotFoundException(`Ponto turístico ou categoria com ID "${id}" não encontrada.`);
+          throw new NotFoundException(
+            `Ponto turístico ou categoria com ID "${id}" não encontrada.`,
+          );
         }
-        if (error.code === 'P2002') { // Ex: se tivesse um campo unique atualizado para um valor já existente
-            throw new ConflictException('Nome de ponto turístico já existe.');
+        if (error.code === 'P2002') {
+          // Ex: se tivesse um campo unique atualizado para um valor já existente
+          throw new ConflictException('Nome de ponto turístico já existe.');
         }
       }
       throw error;
@@ -120,8 +139,13 @@ export class PontoTuristicoService {
         where: { id },
       });
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
-        throw new NotFoundException(`Ponto turístico com ID "${id}" não encontrado para exclusão.`);
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2025'
+      ) {
+        throw new NotFoundException(
+          `Ponto turístico com ID "${id}" não encontrado para exclusão.`,
+        );
       }
       throw error;
     }
@@ -132,10 +156,48 @@ export class PontoTuristicoService {
     return this.prisma.pontoTuristico.findMany({
       where: {
         categorias: {
-          some: { id: categoriaId }
+          some: { id: categoriaId },
+        },
+      },
+      include: { categorias: true },
+    });
+  }
+
+    async buscarPorVariasCategorias(categoriaIds: string[]): Promise<PontoTuristico[]> {
+    return this.prisma.pontoTuristico.findMany({
+      where: {
+        categorias: {
+          some: {
+            id: { in: categoriaIds } // Usa 'in' para buscar IDs dentro de um array
+          }
         }
       },
       include: { categorias: true }
+    });
+  }
+
+
+  async buscarPorCategoriaETexto(categoriaIds?: string[], query?: string): Promise<PontoTuristico[]> {
+    const where: Prisma.PontoTuristicoWhereInput = {};
+
+    if (query) {
+      where.nome = {
+        contains: query,
+        mode: 'insensitive',
+      };
+    }
+
+    if (categoriaIds && categoriaIds.length > 0) {
+      where.categorias = {
+        some: {
+          id: { in: categoriaIds },
+        },
+      };
+    }
+
+    return this.prisma.pontoTuristico.findMany({
+      where,
+      include: { categorias: true },
     });
   }
 
@@ -147,10 +209,10 @@ export class PontoTuristicoService {
     return this.prisma.pontoTuristico.findMany({
       where: {
         avaliacoes: {
-          some: { nota: { gte: minNota } } // Exemplo: pontos com alguma avaliação maior ou igual a minNota
-        }
+          some: { nota: { gte: minNota } }, // Exemplo: pontos com alguma avaliação maior ou igual a minNota
+        },
       },
-      include: { avaliacoes: true, categorias: true }
+      include: { avaliacoes: true, categorias: true },
     });
   }
 
@@ -159,39 +221,58 @@ export class PontoTuristicoService {
       where: {
         endereco: {
           contains: enderecoParcial,
-          mode: 'insensitive' // Para busca case-insensitive no MongoDB
-        }
+          mode: 'insensitive', // Para busca case-insensitive no MongoDB
+        },
       },
-      include: { categorias: true }
+      include: { categorias: true },
     });
   }
 
-  async buscarPorCoordenadas(latitude: number, longitude: number, raioKm: number): Promise<PontoTuristico[]> {
-    // Para busca por coordenadas/raio no MongoDB com Prisma, geralmente
-    // você precisaria de capacidades geo-espaciais nativas do MongoDB (2dsphere index).
-    // O Prisma não tem um método nativo de 'distance' para MongoDB como para DBs relacionais.
-    // Você teria que fazer uma query raw ou calcular a distância no aplicativo.
-    // Exemplo de consulta raw (requer 2dsphere index na coleção e latitude/longitude):
-    const results = await this.prisma.$runCommandRaw({
-      geoNear: "pontoturistico", // Nome da sua coleção no DB
-      near: { type: "Point", coordinates: [longitude, latitude] },
-      distanceField: "dist.calculated",
-      spherical: true,
-      maxDistance: raioKm * 1000, // Converte Km para metros
-    });
-    return results.results as PontoTuristico[];
+async buscarMaisProximosComRaio(
+  latitude: number,
+  longitude: number,
+  raioKm: number,
+  limite: number
+): Promise<PontoTuristico[]> {
+  const raioEmMetros = raioKm * 1000;
 
-    // Por simplicidade, retorno todos os pontos com coordenadas no exemplo
-    // SEM FILTRO DE RAIO, para evitar complexidade de query raw agora.
-    // Implementação real precisa de geoNear ou cálculo de distância.
-    // return this.prisma.pontoTuristico.findMany({
-    //   where: {
-    //     latitude: { not: null },
-    //     longitude: { not: null }
-    //   },
-    //   include: { categorias: true }
-    // });
+  // O pipeline de agregação para o MongoDB
+  const pipeline = [
+    {
+      // O estágio $geoNear encontra, filtra por distância máxima e ordena os documentos.
+      $geoNear: {
+        near: { type: "Point", coordinates: [longitude, latitude] },
+        distanceField: "distanciaEmMetros", // Adiciona a distância ao documento
+        maxDistance: raioEmMetros,          // Aplica o filtro de raio máximo
+        spherical: false,
+      },
+    },
+    {
+      // O estágio $limit restringe o número de documentos retornados aos 'n' mais próximos.
+      $limit: limite,
+    },
+  ];
+
+  // Executa o pipeline de agregação na coleção 'PontoTuristico'
+  const results: any = await this.prisma.pontoTuristico.aggregateRaw({
+    pipeline: pipeline,
+  });
+
+  // Mapeia o resultado para o formato esperado, convertendo o _id
+  if (results && results.length > 0) {
+    const pontosTuristicos = results.map(doc => {
+      const { _id, ...rest } = doc;
+      return {
+        ...rest,
+        id: _id.$oid, // Converte o ObjectId do MongoDB para uma string
+      };
+    });
+    return pontosTuristicos as PontoTuristico[];
   }
+
+  return [];
+}
+
 
   async buscarPorPreco(precoMax: number): Promise<PontoTuristico[]> {
     // Supondo que 'preco' seja um campo na Viagem relacionada.
@@ -199,10 +280,10 @@ export class PontoTuristicoService {
     return this.prisma.pontoTuristico.findMany({
       where: {
         viagens: {
-          some: { preco: { lte: precoMax } } // lte = less than or equal
-        }
+          some: { preco: { lte: precoMax } }, // lte = less than or equal
+        },
       },
-      include: { viagens: true, categorias: true }
+      include: { viagens: true, categorias: true },
     });
   }
 }
