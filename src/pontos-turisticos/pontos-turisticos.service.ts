@@ -66,7 +66,7 @@ export class PontosTuristicosService {
   async findOne(id: string): Promise<PontoTuristico> {
     const pontoTuristico = await this.prisma.pontoTuristico.findUnique({
       where: { id },
-      include: { categorias: true },
+      include: { categorias: true, avaliacoes: true },
     });
     if (!pontoTuristico) {
       throw new NotFoundException(
@@ -159,7 +159,7 @@ export class PontosTuristicosService {
           some: { id: categoriaId },
         },
       },
-      include: { categorias: true },
+      include: { avaliacoes: true, categorias: true },
     });
   }
 
@@ -172,7 +172,7 @@ export class PontosTuristicosService {
           }
         }
       },
-      include: { categorias: true }
+      include: { avaliacoes: true, categorias: true }
     });
   }
 
@@ -197,7 +197,7 @@ export class PontosTuristicosService {
 
     return this.prisma.pontoTuristico.findMany({
       where,
-      include: { categorias: true },
+      include: { avaliacoes: true, categorias: true },
     });
   }
 
@@ -224,7 +224,7 @@ export class PontosTuristicosService {
           mode: 'insensitive', // Para busca case-insensitive no MongoDB
         },
       },
-      include: { categorias: true },
+      include: { avaliacoes: true, categorias: true },
     });
   }
 
@@ -283,7 +283,7 @@ async buscarMaisProximosComRaio(
           some: { preco: { lte: precoMax } }, // lte = less than or equal
         },
       },
-      include: { viagens: true, categorias: true },
+      include: { viagens: true, categorias: true, avaliacoes: true, },
     });
   }
 }

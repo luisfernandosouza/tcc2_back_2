@@ -101,7 +101,6 @@ export class PontosTuristicosController {
     return this.pontoTuristicoService.remove(id);
   }
 
-  // --- Endpoints de Busca Adicionais (Baseados no seu diagrama original) ---
 
   @Get('search/by-category/:categoryId')
   @ApiOperation({ summary: 'Busca pontos turísticos por categoria' })

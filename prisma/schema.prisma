@@ -28,7 +28,7 @@ model Usuario {
   senha         String
   endereco      String?
   notificacoes  Notificacao[]
-  avaliacoes    Avaliacao[]
+  avaliacao    Avaliacao[]
   preferencia   Preferencia?
   recomendacoes Recomendacao[]
 }
@@ -97,7 +97,7 @@ model PontoTuristico {
   descricao      String
   endereco       String?
   location       Json?
-  avaliacoes     Avaliacao[]
+  avaliacao     Avaliacao[]
   recomendacoes  Recomendacao[]
   preferencias   Preferencia[]  @relation(fields: [preferenciaIds], references: [id])
   preferenciaIds String[]       @db.ObjectId

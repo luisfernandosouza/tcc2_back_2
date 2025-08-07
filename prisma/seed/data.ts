@@ -1,4 +1,6 @@
 export const CATEGORY_NAMES = [
+  'Esporte',
+  'Parque',
   'Praia',
   'Orla',
   'Cultura',
@@ -16,8 +18,20 @@ export const CATEGORY_NAMES = [
 
 export const PONTOS_TURISTICOS_DATA = [
   {
+    nome: 'Parque da Sementeira',
+    descricao:
+      'Um dos maiores parques urbanos de Aracaju, com áreas verdes, lagoas e espaços para lazer e atividades ao ar livre. É um local popular para caminhadas, piqueniques e eventos culturais.',
+    endereco: 'Av. Sementeira, S/N - Sementeira, Aracaju - SE',
+    location: {
+      type: 'Point',
+      coordinates: [-37.0628, -10.9445],
+    },
+    categorias: ['Parque', 'Lazer', 'Natureza', 'Cultura', 'Esporte'],
+  },
+  {
     nome: 'Orla de Atalaia',
-    descricao: 'Principal cartão-postal e centro de entretenimento de Aracaju, com 6 km de extensão...',
+    descricao:
+      'Principal cartão-postal e centro de entretenimento de Aracaju, com 6 km de extensão...',
     endereco: 'Av. Santos Dumont, S/N - Atalaia, Aracaju - SE',
     location: {
       type: 'Point',
@@ -37,7 +51,8 @@ export const PONTOS_TURISTICOS_DATA = [
   },
   {
     nome: 'Oceanário de Aracaju (Projeto Tamar)',
-    descricao: 'Importante centro de conservação marinha, localizado na Orla de Atalaia...',
+    descricao:
+      'Importante centro de conservação marinha, localizado na Orla de Atalaia...',
     endereco: 'Av. Santos Dumont, 1010 - Atalaia, Aracaju - SE, 49035-730',
     location: {
       type: 'Point',
@@ -47,7 +62,8 @@ export const PONTOS_TURISTICOS_DATA = [
   },
   {
     nome: 'Museu da Gente Sergipana Governador Marcelo Déda',
-    descricao: 'Espaço cultural interativo e multimídia localizado no centro histórico...',
+    descricao:
+      'Espaço cultural interativo e multimídia localizado no centro histórico...',
     endereco: 'Av. Ivo do Prado, 398 - Centro, Aracaju - SE, 49010-050',
     location: {
       type: 'Point',
@@ -57,7 +73,8 @@ export const PONTOS_TURISTICOS_DATA = [
   },
   {
     nome: 'Mercados Centrais (Antônio Franco, Thales Ferraz e Albano Franco)',
-    descricao: 'Complexo de três mercados públicos interligados no centro da cidade...',
+    descricao:
+      'Complexo de três mercados públicos interligados no centro da cidade...',
     endereco: 'Av. Simeão Sobral, S/N - Centro, Aracaju - SE, 49010-000',
     location: {
       type: 'Point',
@@ -71,33 +88,37 @@ export const PONTOS_TURISTICOS_DATA = [
     endereco: 'Av. Ivo do Prado, S/N - Centro, Aracaju - SE, 49010-050',
     location: {
       type: 'Point',
-      coordinates: [-37.0516, -10.9130],
+      coordinates: [-37.0516, -10.913],
     },
     categorias: ['Cultura', 'História', 'Arquitetura', 'Monumentos'],
   },
   {
     nome: 'Catedral Metropolitana de Aracaju',
-    descricao: 'Principal templo católico da cidade, localizado no coração do centro histórico...',
+    descricao:
+      'Principal templo católico da cidade, localizado no coração do centro histórico...',
     endereco: 'Praça Olímpio Campos, S/N - Centro, Aracaju - SE, 49010-040',
     location: {
       type: 'Point',
-      coordinates: [-37.0510, -10.9153],
+      coordinates: [-37.051, -10.9153],
     },
     categorias: ['Cultura', 'História', 'Arquitetura', 'Monumentos'],
   },
   {
     nome: 'Colina do Santo Antônio',
-    descricao: 'Considerado o marco zero da cidade, este é um dos pontos mais altos de Aracaju...',
-    endereco: 'Ladeira do Santo Antônio - Santo Antônio, Aracaju - SE, 49060-300',
+    descricao:
+      'Considerado o marco zero da cidade, este é um dos pontos mais altos de Aracaju...',
+    endereco:
+      'Ladeira do Santo Antônio - Santo Antônio, Aracaju - SE, 49060-300',
     location: {
       type: 'Point',
-      coordinates: [-37.0609, -10.9060],
+      coordinates: [-37.0609, -10.906],
     },
     categorias: ['Cultura', 'História', 'Lazer', 'Natureza'],
   },
   {
     nome: 'Orla Pôr do Sol',
-    descricao: 'Localizada na Praia do Mosqueiro, às margens do Rio Vaza-Barris...',
+    descricao:
+      'Localizada na Praia do Mosqueiro, às margens do Rio Vaza-Barris...',
     endereco: 'Rod. Inácio Barbosa, S/N - Mosqueiro, Aracaju - SE, 49039-100',
     location: {
       type: 'Point',
@@ -107,7 +128,8 @@ export const PONTOS_TURISTICOS_DATA = [
   },
   {
     nome: 'Crôa do Goré',
-    descricao: 'Um encantador banco de areia que emerge no meio do Rio Vaza-Barris...',
+    descricao:
+      'Um encantador banco de areia que emerge no meio do Rio Vaza-Barris...',
     endereco: 'Rio Vaza-Barris, Aracaju - SE',
     location: {
       type: 'Point',
@@ -116,22 +138,13 @@ export const PONTOS_TURISTICOS_DATA = [
     categorias: ['Passeios', 'Ecoturismo', 'Lazer', 'Natureza'],
   },
   {
-    nome: 'Parque da Sementeira (Parque Augusto Franco)',
-    descricao: 'Ampla área verde urbana no bairro Jardins, ideal para lazer e atividades físicas...',
-    endereco: 'Av. Jornalista Santos Santana, S/N - Jardins, Aracaju - SE, 49025-300',
-    location: {
-      type: 'Point',
-      coordinates: [-37.0610, -10.9343],
-    },
-    categorias: ['Lazer', 'Natureza'],
-  },
-  {
     nome: 'Arcos da Orla de Atalaia',
-    descricao: 'Estrutura icônica composta por arcos coloridos na Orla de Atalaia...',
+    descricao:
+      'Estrutura icônica composta por arcos coloridos na Orla de Atalaia...',
     endereco: 'Av. Santos Dumont, S/N - Atalaia, Aracaju - SE',
     location: {
       type: 'Point',
-      coordinates: [-37.0385, -10.9800],
+      coordinates: [-37.0385, -10.98],
     },
     categorias: ['Orla', 'Arquitetura', 'Monumentos'],
   },
@@ -147,7 +160,8 @@ export const PONTOS_TURISTICOS_DATA = [
   },
   {
     nome: 'Ponte Construtor João Alves (Aracaju-Barra dos Coqueiros)',
-    descricao: 'Imponente ponte estaiada que liga Aracaju ao município de Barra dos Coqueiros...',
+    descricao:
+      'Imponente ponte estaiada que liga Aracaju ao município de Barra dos Coqueiros...',
     endereco: 'Ponte Construtor João Alves - Aracaju/Barra dos Coqueiros, SE',
     location: {
       type: 'Point',
@@ -157,7 +171,8 @@ export const PONTOS_TURISTICOS_DATA = [
   },
   {
     nome: 'Praia do Mosqueiro',
-    descricao: 'Uma das praias mais ao sul de Aracaju, conhecida por sua tranquilidade...',
+    descricao:
+      'Uma das praias mais ao sul de Aracaju, conhecida por sua tranquilidade...',
     endereco: 'Rodovia Inácio Barbosa - Mosqueiro, Aracaju - SE',
     location: {
       type: 'Point',
